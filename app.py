@@ -1,7 +1,8 @@
 from pyfiglet import figlet_format
 
 def main():
-    table = [[1,2,3], [4,5,6], [7,8,9]]
+    table = [['•1','•2','•3'], ['•4','•5','•6'], ['•7','•8','•9']]
+    # test_table = [['⚪️','⚫️','•3'], ['⚫️','✅','⚪️'], ['⚪️','⚫️','•9']]
     options = [['❌','✅'], ['⚫️','⚪️']]
     wins = [[1,2,3], [4,5,6], [7,8,9],[1,4,7], [2,5,8], [3,6,9], [1,5,9], [3,5,7]]
 
@@ -11,21 +12,10 @@ def main():
     option_idx = select_option()
     selected_option = options[option_idx] # ['❌','✅'] or ['⚫️','⚪️']
 
-
-    idxs = select_symbol(selected_option) # {"p1_idx": p1_idx, "p2_idx": p2_idx}
-
-    p1_idx = idxs["p1_idx"]
-    p2_idx = idxs["p2_idx"]
-
     br()
     print_title("Let's go ...", "threepoint")
 
-
-    print_table(table)
-    br()
-
-    input(f"Player1[{selected_option[p1_idx]}]: ")
-    input(f"Player2[{selected_option[p2_idx]}]: ")
+    game_loop(table, selected_option)
 
 
 
@@ -34,7 +24,7 @@ def print_title(title: str, font: str):
     print(f"{title}")
 
 def print_table(table):
-    divider = '+-----+-----+-----+'
+    divider = '+------+------+------+'
 
     print(divider)
     for row in table:
@@ -50,7 +40,7 @@ def select_option():
     while True:
         opt = input("Press [1] for (❌ / ✅) | [2] for (⚫️ / ⚪️): ")
 
-        if check_num_for_1and2(opt):
+        if check_num_between(opt, 0, 3):
             break
 
     return int(opt) - 1
@@ -65,7 +55,7 @@ def select_symbol(selected_option):
 
         while True:
            n = input("Player1: ")
-           if check_num_for_1and2(n):
+           if check_num_between(n, 0, 3):
                break
 
         p1_idx = int(n) - 1
@@ -73,14 +63,45 @@ def select_symbol(selected_option):
 
         return {"p1_idx": p1_idx, "p2_idx": p2_idx}
 
-def check_num_for_1and2(input: str):
-    if input.isnumeric() and int(input) > 0 and int(input) < 3:
+def check_num_between(input: str, start: int, end: int):
+    """
+    Check input is between start and end
+    Note: start and end not include
+    """
+
+    if input.isnumeric() and int(input) > start and int(input) < end:
         return True
     else:
         return False
 
 def br():
      print("\n")
+
+def game_loop(table, selected_option):
+    idxs = select_symbol(selected_option) # {"p1_idx": p1_idx, "p2_idx": p2_idx}
+
+    p1_idx = idxs["p1_idx"]
+    p2_idx = idxs["p2_idx"]
+
+    t = table
+    while True:
+        print_table(t)
+        br()
+
+        while True:
+            selected_n = input(f"Player1[{selected_option[p1_idx]}]: ")
+            if check_num_between(selected_n, 0, 10):
+                # for row in t:
+                #     for cell in row:
+
+
+
+                break
+
+
+
+
+
 
 
 if __name__ == '__main__':
