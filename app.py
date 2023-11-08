@@ -3,8 +3,6 @@ from pyfiglet import figlet_format
 # Todo: Make options dynamically
 # Todo: Check for draw case
 
-table = [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '9']]
-
 
 def main():
     table = [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '9']]
