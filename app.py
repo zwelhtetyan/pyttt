@@ -1,7 +1,6 @@
 from pyfiglet import figlet_format
 
 # Todo: Make options dynamically
-# Todo: Check for draw case
 
 
 def main():
@@ -40,7 +39,7 @@ def select_option(options):
     while True:
         opt = input("Press [1] for (❌ / ✅) | [2] for (⚫️ / ⚪️): ")
 
-        if check_num_between(opt, 0, 3):
+        if check_num_between(opt, list(range(1, 3))):
             break
 
     return options[int(opt) - 1]
@@ -56,7 +55,7 @@ def select_symbol(table, selected_option):
 
     while True:
         n = input("Player1: ")
-        if check_num_between(n, 0, 3):
+        if check_num_between(n, list(range(1, 3))):
             break
     br()
     print_title("Let's go ...", "threepoint")
@@ -71,13 +70,12 @@ def select_symbol(table, selected_option):
     return {"p1_idx": p1_idx, "p2_idx": p2_idx}
 
 
-def check_num_between(input: str, start: int, end: int):
+def check_num_between(input: str, list):
     """
-    Check input is between start and end
-    Note: start and end not include
+    Check input number is in the list
     """
 
-    if input.isnumeric() and int(input) > start and int(input) < end:
+    if input.isnumeric() and int(input) in list:
         return True
     else:
         return False
@@ -104,6 +102,7 @@ def game_loop(table, idxs, selected_option):
     p2_idx = idxs["p2_idx"]
 
     t = table
+    t_numbers = list(range(1, 10))
     current_player_idx = p1_idx
 
     p1_selected_numbers = []
@@ -118,26 +117,33 @@ def game_loop(table, idxs, selected_option):
         while True:
             selected_n = input(
                 f"Player{current_player}[{selected_option[current_player_idx]}]: ")
-            if check_num_between(selected_n, 0, 10):
+            if check_num_between(selected_n, t_numbers):
                 for row in t:
                     for i in range(len(row)):
                         cell = row[i]
                         if cell.isnumeric() and int(selected_n) == int(cell):
                             row[i] = selected_option[current_player_idx]
+                            t_numbers.remove(int(selected_n))
                             p1_selected_numbers.append(int(
                                 selected_n)) if current_player == '1' else p2_selected_numbers.append(selected_n)
 
+                print_table(t)
+                br()
+
                 break
 
-        print_table(t)
-        br()
+
 
         # calculate winner
         winner = calculate_winner(
             wins, p1_selected_numbers, p2_selected_numbers)
         if winner:
             # print winner
-            print_title(winner, "standard")
+            print_title(f"{winner} !", "standard")
+            break
+        elif not len(t_numbers):
+            # draw case
+            print_title("Draw !", "standard")
             break
         else:
             # update current player index
