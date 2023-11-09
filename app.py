@@ -160,4 +160,4 @@ def game_loop(table, idxs, selected_option):
 if __name__ == '__main__':
     main()
 
-# ❌ ✅ ⚫️ ⚪️
+# ✅ ❌ ⚪️ ⚫️ 👻 💩
