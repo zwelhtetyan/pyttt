@@ -1,15 +1,13 @@
 from pyfiglet import figlet_format
 
-# Todo: Make options dynamically
-
 
 def main():
     table = [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '9']]
-    options = [['❌', '✅'], ['⚫️', '⚪️']]
+    options = [['✅', '❌'], ['⚪️', '⚫️'], ['👻', '💩']] # Add more option you want
 
     print_title("TIC TAC TOE", "slant")
 
-    selected_option = select_option(options)  # ['❌','✅'] or ['⚫️','⚪️']
+    selected_option = select_option(options)  # ['❌','✅'] or ['⚫️','⚪️'] or etc...
 
     idxs = select_symbol(table, selected_option)
 
@@ -34,12 +32,23 @@ def print_table(table):
 
 
 def select_option(options):
-    print("There are two options to play the game.\n")
+    opt_len = len(options)
+    print(f"There {opt_len} options to play the game.\n")
+
+    # Construct the description dynamically
+    desc = ""
+    for i, option_pair in enumerate(options):
+        desc += f"[{i + 1}] for ({' / '.join(option_pair)}) | "
+
+    # Remove the trailing " | " from the desc
+    desc = desc.rstrip(" | ")
 
     while True:
-        opt = input("Press [1] for (❌ / ✅) | [2] for (⚫️ / ⚪️): ")
+        # opt = input("Press [1] for (❌ / ✅) | [2] for (⚫️ / ⚪️): ")
+        # Display the dynamically generated description
+        opt = input(f"Press {desc}: ")
 
-        if check_num_between(opt, list(range(1, 3))):
+        if check_num_between(opt, list(range(1, opt_len + 1))):
             break
 
     return options[int(opt) - 1]
@@ -131,8 +140,6 @@ def game_loop(table, idxs, selected_option):
                 br()
 
                 break
-
-
 
         # calculate winner
         winner = calculate_winner(
