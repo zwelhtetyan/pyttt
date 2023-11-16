@@ -33,7 +33,7 @@ def print_table(table):
 
 def select_option(options):
     opt_len = len(options)
-    print(f"There {opt_len} options to play the game.\n")
+    print(f"There are {opt_len} options to play the game.\n")
 
     # Construct the description dynamically
     desc = ""
